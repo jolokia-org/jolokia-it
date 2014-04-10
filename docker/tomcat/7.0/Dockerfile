@@ -4,9 +4,9 @@ MAINTAINER roland@jolokia.org
 
 EXPOSE 8080
 
-ENV TOMCAT_VERSION 7.0.52
+ENV TOMCAT_VERSION 7.0.53
 
-RUN wget http://www.eu.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz
+RUN wget http://archive.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz
 
 # Unpack
 RUN tar xzf /tmp/catalina.tar.gz -C /opt
