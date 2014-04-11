@@ -4,9 +4,9 @@ MAINTAINER roland@jolokia.org
 
 EXPOSE 8080
 
-ENV TOMCAT_VERSION 7.0.53
+ENV TOMCAT_VERSION 6.0.39
 
-RUN wget http://archive.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz
+RUN wget http://archive.apache.org/dist/tomcat/tomcat-6/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz
 
 # Unpack
 RUN tar xzf /tmp/catalina.tar.gz -C /opt
@@ -14,7 +14,7 @@ RUN ln -s /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat
 RUN rm /tmp/catalina.tar.gz
 
 # Add roles
-ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/
+ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/conf/
 
 # Remove unneeded apps
 RUN rm -rf /opt/tomcat/webapps/examples
