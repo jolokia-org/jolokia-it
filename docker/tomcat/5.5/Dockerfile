@@ -18,8 +18,7 @@ RUN rm /tmp/catalina.tar.gz
 ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/conf/
 
 # Remove unneeded apps
-RUN rm -rf /opt/tomcat/webapps/examples
-RUN rm -rf /opt/tomcat/webapps/docs
+RUN rm -rf /opt/tomcat/webapps/balancer /opt/tomcat/webapps/jsp-examples  /opt/tomcat/webapps/servlets-examples  /opt/tomcat/webapps/tomcat-docs/  /opt/tomcat/webapps/webdav/
 
 # Replace "random" with "urandom" for quicker startups
 RUN sudo rm /dev/random && sudo ln -s /dev/urandom /dev/random

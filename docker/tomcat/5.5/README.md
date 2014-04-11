@@ -11,5 +11,5 @@ Features:
 * Port: **8080**
 * User **admin** (Password: **admin**) has been added to access the admin
   applications */host-manager* and */manager*)
-* Documentation and examples has been removed
+* Documentation and examples have been removed
 * Command: `/opt/tomcat/bin/catalina.sh run`
