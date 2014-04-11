@@ -12,4 +12,4 @@ Features:
 * User **admin** (Password: **admin**) has been added to access the admin
   applications */host-manager* and */manager*)
 * Documentation and examples have been removed
-* Command: `/opt/tomcat/bin/catalina.sh run`
+* Command: `/opt/tomcat/bin/tomcat run`
