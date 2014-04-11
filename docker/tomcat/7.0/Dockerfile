@@ -14,7 +14,7 @@ RUN ln -s /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat
 RUN rm /tmp/catalina.tar.gz
 
 # Add roles
-ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/
+ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/conf
 
 # Remove unneeded apps
 RUN rm -rf /opt/tomcat/webapps/examples
