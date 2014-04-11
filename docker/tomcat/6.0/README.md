@@ -1,6 +1,6 @@
-## Apache Tomcat 6.x
+## Apache Tomcat 6.0
 
-A simple docker build for installing a vanilla Tomcat 6 below
+A simple docker build for installing a vanilla Tomcat 6.0 below
 */opt/tomcat*. It comes out of the box and is intended for use for
 integration testing.
 

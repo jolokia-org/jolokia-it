@@ -1,6 +1,6 @@
-## Apache Tomcat 8.x
+## Apache Tomcat 8.0
 
-A simple docker build for installing a vanilla Tomcat 8 below
+A simple docker build for installing a vanilla Tomcat 8.0 below
 */opt/tomcat*. It comes out of the box and is intended for use for
 integration testing.
 
