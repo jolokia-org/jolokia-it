@@ -2,7 +2,7 @@ FROM dockerfile/java
 
 MAINTAINER roland@jolokia.org
 
-EXPOSE 8080
+ENV http_proxy http://proxy.consol.de:8001
 
 ENV TOMCAT_VERSION 7.0.53
 

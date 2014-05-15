@@ -16,6 +16,8 @@
   <properties>
     <jolokia.url>http://localhost:${jolokia.port}/jolokia</jolokia.url>
     <citrus.base>../</citrus.base>
+    <tomcat.version>7.0</tomcat.version>
+    <tomcat.cargo>7x</tomcat.cargo>
   </properties>
 
   <build>
@@ -25,7 +27,7 @@
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
           <color>true</color>
-          <image>jolokia/tomcat:7.0.52</image>
+          <image>jolokia/tomcat-${tomcat.version}</image>
           <waitHttp>http://localhost:${jolokia.port}</waitHttp>
           <wait>10000</wait>
           <ports>
@@ -39,7 +41,7 @@
         <artifactId>cargo-maven2-plugin</artifactId>
         <configuration>
           <container>
-            <containerId>tomcat7x</containerId>
+            <containerId>tomcat${tomcat.cargo}</containerId>
             <type>remote</type>
           </container>
           <configuration>

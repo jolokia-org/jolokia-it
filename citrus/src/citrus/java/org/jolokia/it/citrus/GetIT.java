@@ -10,11 +10,6 @@ import org.testng.annotations.Test;
 @Test
 public class GetIT extends AbstractJolokiaIT {
 
-    //@BeforeTest
-    public void resetMBean() {
-        sendGet("/exec/jolokia.it:type=attribute/reset");
-    }
-
     @CitrusTest
     public void simpleGet() {
         sendGet("/read/java.lang:type=Memory");

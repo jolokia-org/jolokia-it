@@ -24,7 +24,7 @@
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
           <color>true</color>
-          <image>jolokia/tomcat:7.0.52</image>
+          <image>jolokia/tomcat-6.0</image>
           <waitHttp>http://localhost:${jolokia.port}</waitHttp>
           <wait>10000</wait>
           <ports>
