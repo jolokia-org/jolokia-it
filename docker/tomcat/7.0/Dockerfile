@@ -13,6 +13,7 @@ RUN rm /tmp/catalina.tar.gz
 
 # Add roles
 ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/conf/
+ADD deploy-and-run.sh /opt/apache-tomcat-${TOMCAT_VERSION}/bin/
 
 # Remove unneeded apps
 RUN rm -rf /opt/tomcat/webapps/examples
@@ -26,4 +27,4 @@ RUN sudo rm /dev/random && sudo ln -s /dev/urandom /dev/random
 ENV CATALINA_HOME /opt/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
 
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+CMD /opt/tomcat/bin/deploy-and-run.sh
