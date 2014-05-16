@@ -182,6 +182,9 @@
               </goals>
             </execution>
           </executions>
+          <configuration>
+            <assemblyDescriptor>src/main/assembly/jolokia-deploy.xml</assemblyDescriptor>
+          </configuration>
         </plugin>
 
         <plugin>
