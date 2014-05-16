@@ -18,7 +18,7 @@ RUN rm /tmp/catalina.tar.gz
 ADD admin-users.xml /opt/jakarta-tomcat-${TOMCAT_VERSION}/conf/users/
 
 # Add deployment script
-ADD deploy-and-run.sh /opt/apache-tomcat-${TOMCAT_VERSION}/bin/
+ADD deploy-and-run.sh /opt/jakarta-tomcat-${TOMCAT_VERSION}/bin/
 
 # Remove unneeded apps
 RUN rm -rf /opt/tomcat/webapps/examples.war

@@ -15,6 +15,7 @@ RUN rm /tmp/catalina.tar.gz
 
 # Add roles
 ADD tomcat-users.xml /opt/apache-tomcat-${TOMCAT_VERSION}/conf/
+
 # Startup script
 ADD deploy-and-run.sh /opt/apache-tomcat-${TOMCAT_VERSION}/bin/
 
