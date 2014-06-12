@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.jolokia.it</groupId>
+  <artifactId>jolokia-it</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Jolokia :: IT</name>
+
+  <modules>
+    <module>support/core</module>
+    <module>support/war</module>
+    <module>run</module>
+  </modules>
+
+  <properties>
+    <jolokia.version>1.2.2-SNAPSHOT</jolokia.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>consol-labs-release</id>
+      <url>http://labs.consol.de/maven/repository/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>consol-labs-snapshots</id>
+      <url>http://labs.consol.de/maven/snapshots-repository/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <!-- Policy: always, daily, interval:xxx (xxx=#minutes, 60*24*7=10080), never -->
+        <updatePolicy>interval:10080</updatePolicy>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>consol-labs-release</id>
+      <url>http://labs.consol.de/maven/repository/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>consol-labs-snapshots</id>
+      <url>http://labs.consol.de/maven/snapshots-repository/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:10080</updatePolicy>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+</project>
