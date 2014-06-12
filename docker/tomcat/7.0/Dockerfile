@@ -2,7 +2,7 @@ FROM dockerfile/java
 
 MAINTAINER roland@jolokia.org
 
-ENV TOMCAT_VERSION 7.0.53
+ENV TOMCAT_VERSION 7.0.54
 ENV DEPLOY_DIR /maven
 
 RUN wget http://archive.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz
@@ -21,9 +21,6 @@ ADD deploy-and-run.sh /opt/apache-tomcat-${TOMCAT_VERSION}/bin/
 # Remove unneeded apps
 RUN rm -rf /opt/tomcat/webapps/examples
 RUN rm -rf /opt/tomcat/webapps/docs
-
-# Replace "random" with "urandom" for quicker startups
-RUN sudo rm /dev/random && sudo ln -s /dev/urandom /dev/random
 
 # VOLUME ["/opt/tomcat/logs", "/opt/tomcat/work", "/opt/tomcat/temp", "/tmp/hsperfdata_root"
 

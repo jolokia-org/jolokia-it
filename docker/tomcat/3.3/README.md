@@ -20,4 +20,6 @@ Features:
   applications */host-manager* and */manager*)
 * Documentation and examples have been removed
 * Command: `/opt/tomcat/bin/deploy-and-run.sh` which links .war files from */maven* to 
-  */opt/tomcat/webapps* and the calls `tomcat run`
+  */opt/tomcat/webapps* and them calls `tomcat run`
+* /dev/urandom is used instead of /dev/random for faster startup times
+  (though a bit less secure)

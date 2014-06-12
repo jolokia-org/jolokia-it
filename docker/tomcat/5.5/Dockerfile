@@ -23,9 +23,6 @@ ADD deploy-and-run.sh /opt/apache-tomcat-${TOMCAT_VERSION}/bin/
 # Remove unneeded apps
 RUN rm -rf /opt/tomcat/webapps/balancer /opt/tomcat/webapps/jsp-examples  /opt/tomcat/webapps/servlets-examples  /opt/tomcat/webapps/tomcat-docs/  /opt/tomcat/webapps/webdav/
 
-# Replace "random" with "urandom" for quicker startups
-RUN sudo rm /dev/random && sudo ln -s /dev/urandom /dev/random
-
 # VOLUME ["/opt/tomcat/logs", "/opt/tomcat/work", "/opt/tomcat/temp", "/tmp/hsperfdata_root"
 
 ENV CATALINA_HOME /opt/tomcat

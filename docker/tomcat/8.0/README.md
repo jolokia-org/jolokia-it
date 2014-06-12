@@ -13,11 +13,13 @@ exported from a directory "/maven".
 
 Features:
 
-* Tomcat Version: **8.0.5**
+* Tomcat Version: **8.0.8**
 * Java Version: **Oracle 1.7.0_51-b13** (base image: *dockerfile/java*)
 * Port: **8080**
 * User **admin** (Password: **admin**) has been added to access the admin
   applications */host-manager* and */manager*)
 * Documentation and examples have been removed
 * Command: `/opt/tomcat/bin/deploy-and-run.sh` which links .war files from */maven* to 
-  */opt/tomcat/webapps* and the calls `catalina.sh run`
+  */opt/tomcat/webapps* and then calls `catalina.sh run`
+* /dev/urandom is used instead of /dev/random for faster startup times
+  (though a bit less secure)
