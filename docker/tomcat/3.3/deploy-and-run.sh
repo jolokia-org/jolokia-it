@@ -9,4 +9,6 @@ if [ -d $DIR ]; then
      ln -s $i /opt/tomcat/webapps/$file
   done
 fi
+# Use faster (though more unsecure) random number generator
+export TOMCAT_OPTS="-Djava.security.egd=file:/dev/./urandom"
 /opt/tomcat/bin/tomcat run
