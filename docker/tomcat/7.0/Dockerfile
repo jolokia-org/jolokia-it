@@ -2,6 +2,8 @@ FROM dockerfile/java
 
 MAINTAINER roland@jolokia.org
 
+EXPOSE 8080
+
 ENV TOMCAT_VERSION 7.0.54
 ENV DEPLOY_DIR /maven
 
