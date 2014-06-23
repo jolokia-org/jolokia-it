@@ -28,4 +28,4 @@ RUN rm -rf /opt/tomcat/webapps/docs
 ENV CATALINA_HOME /opt/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
 
-CMD /opt/tomcat/bin/deploy-and-run.sh
+CMD /opt/apache-tomcat-${TOMCAT_VERSION}/bin/deploy-and-run.sh
