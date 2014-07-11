@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -19,9 +21,10 @@
 
   <properties>
     <test.base>.</test.base>
+    <jolokia.url>http://localhost:${jolokia.port}/jolokia</jolokia.url>
   </properties>
-  <dependencies>
 
+  <dependencies>
     <dependency>
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-war</artifactId>
@@ -97,9 +100,9 @@
           </execution>
         </executions>
         <configuration>
-          <testClassesDirectory>../target/test-classes</testClassesDirectory>
+          <testClassesDirectory>target/test-classes</testClassesDirectory>
           <systemPropertyVariables>
-            <!-- Needs to be repeated here (doesn't work when the next line is omitted although it should
+            <!-- Needs to be repeated here (doesn't work when the next line is omitted although it should)
                  Maven, you little sneaky beast ... -->
             <jolokia.port>${jolokia.port}</jolokia.port>
             <jolokia.url>http://localhost:${jolokia.port}/jolokia</jolokia.url>
@@ -107,85 +110,33 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>start</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <assemblyDescriptor>src/main/assembly/jolokia-war-deploy.xml</assemblyDescriptor>
+          <waitHttp>http://localhost:${jolokia.port}</waitHttp>
+          <wait>10000</wait>
+        </configuration>
+      </plugin>
     </plugins>
-
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.jolokia</groupId>
-          <artifactId>docker-maven-plugin</artifactId>
-          <version>0.9.3</version>
-          <executions>
-            <execution>
-              <id>start</id>
-              <phase>pre-integration-test</phase>
-              <goals>
-                <goal>start</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>stop</id>
-              <phase>post-integration-test</phase>
-              <goals>
-                <goal>stop</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <assemblyDescriptor>src/main/assembly/jolokia-war-deploy.xml</assemblyDescriptor>
-          </configuration>
-        </plugin>
-
-      </plugins>
-    </pluginManagement>
   </build>
 
-  <repositories>
-    <repository>
-      <id>consol-labs-release</id>
-      <url>http://labs.consol.de/maven/repository/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <!-- Policy: always, daily, interval:xxx (xxx=#minutes, 60*24*7=10080), never -->
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>consol-labs-release</id>
-      <url>http://labs.consol.de/maven/repository/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
 </project>

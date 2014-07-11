@@ -8,6 +8,7 @@
       </includes>
       <outputDirectory>.</outputDirectory>
       <outputFileNameMapping>jolokia.war</outputFileNameMapping>
+      <useProjectArtifact>false</useProjectArtifact>
     </dependencySet>
     <dependencySet>
       <includes>
@@ -15,6 +16,7 @@
       </includes>
       <outputDirectory>.</outputDirectory>
       <outputFileNameMapping>jolokia-it.war</outputFileNameMapping>
+      <useProjectArtifact>false</useProjectArtifact>
     </dependencySet>
   </dependencySets>
 </assembly>

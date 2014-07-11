@@ -21,6 +21,26 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.jolokia</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>0.9.5-SNAPSHOT</version>
+          <configuration>
+            <color>true</color>
+            <waitHttp>http://localhost:${jolokia.port}</waitHttp>
+            <wait>10000</wait>
+            <ports>
+              <port>jolokia.port:${server.port}</port>
+            </ports>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
   <repositories>
     <repository>
       <id>consol-labs-release</id>
@@ -69,4 +89,28 @@
       </releases>
     </pluginRepository>
   </pluginRepositories>
+
+  <!-- ========================================================================================== -->
+  <!-- Server Profiles -->
+   <profiles>
+     <profile>
+       <id>tomcat</id>
+
+       <properties>
+         <server.version>7.0</server.version>
+         <server.port>8080</server.port>
+       </properties>
+       <build>
+         <plugins>
+           <plugin>
+             <groupId>org.jolokia</groupId>
+             <artifactId>docker-maven-plugin</artifactId>
+             <configuration>
+               <image>jolokia/tomcat-${server.version}</image>
+             </configuration>
+           </plugin>
+         </plugins>
+       </build>
+     </profile>
+   </profiles>
 </project>
