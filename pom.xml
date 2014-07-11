@@ -92,10 +92,52 @@
 
   <!-- ========================================================================================== -->
   <!-- Server Profiles -->
+
+
+
    <profiles>
      <profile>
-       <id>tomcat</id>
+       <id>default</id>
+       <build>
+         <plugins>
+           <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-enforcer-plugin</artifactId>
+             <version>1.3.1</version>
+             <executions>
+               <execution>
+                 <id>enforce-versions</id>
+                 <goals>
+                   <goal>enforce</goal>
+                 </goals>
+                 <configuration>
+                   <rules>
+                     <requireActiveProfile>
+                       <message>
+=======================================================
+One of the following profiles must be specified via -P:
 
+      "tomcat"   -- tomcat
+      "jetty"    -- jetty
+
+=======================================================
+                       </message>
+                       <profiles>tomcat,jetty</profiles>
+                       <all>false</all>
+                     </requireActiveProfile>
+                   </rules>
+                 </configuration>
+               </execution>
+             </executions>
+           </plugin>
+         </plugins>
+       </build>
+       <activation><activeByDefault>true</activeByDefault></activation>
+     </profile>
+
+
+   <profile>
+       <id>tomcat</id>
        <properties>
          <server.version>7.0</server.version>
          <server.port>8080</server.port>
