@@ -134,6 +134,7 @@
           <assemblyDescriptor>src/main/assembly/jolokia-war-deploy.xml</assemblyDescriptor>
           <waitHttp>http://localhost:${jolokia.port}</waitHttp>
           <wait>10000</wait>
+          <autoPull>true</autoPull>
         </configuration>
       </plugin>
     </plugins>

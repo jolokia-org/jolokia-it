@@ -32,6 +32,7 @@
             <color>true</color>
             <waitHttp>http://localhost:${jolokia.port}</waitHttp>
             <wait>10000</wait>
+            <autoPull>true</autoPull>
             <ports>
               <port>jolokia.port:${server.port}</port>
             </ports>
@@ -117,8 +118,8 @@
 =======================================================
 One of the following profiles must be specified via -P:
 
-      "tomcat"   -- tomcat
-      "jetty"    -- jetty
+      "tomcat"   -- Apache Tomcat
+      "jetty"    -- Eclipse Jetty
 
 =======================================================
                        </message>
@@ -139,7 +140,7 @@ One of the following profiles must be specified via -P:
    <profile>
        <id>tomcat</id>
        <properties>
-         <server.version>7.0</server.version>
+         <server.version>8.0</server.version>
          <server.port>8080</server.port>
        </properties>
        <build>
@@ -148,7 +149,7 @@ One of the following profiles must be specified via -P:
              <groupId>org.jolokia</groupId>
              <artifactId>docker-maven-plugin</artifactId>
              <configuration>
-               <image>jolokia/tomcat-${server.version}</image>
+               <image>consol/tomcat-${server.version}:</image>
              </configuration>
            </plugin>
          </plugins>
