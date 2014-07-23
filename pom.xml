@@ -27,7 +27,7 @@
         <plugin>
           <groupId>org.jolokia</groupId>
           <artifactId>docker-maven-plugin</artifactId>
-          <version>0.9.5-SNAPSHOT</version>
+          <version>0.9.8</version>
           <configuration>
             <color>true</color>
             <waitHttp>http://localhost:${jolokia.port}</waitHttp>
@@ -149,7 +149,7 @@ One of the following profiles must be specified via -P:
              <groupId>org.jolokia</groupId>
              <artifactId>docker-maven-plugin</artifactId>
              <configuration>
-               <image>consol/tomcat-${server.version}:</image>
+               <image>consol/tomcat-${server.version}:8.0.9</image>
              </configuration>
            </plugin>
          </plugins>
