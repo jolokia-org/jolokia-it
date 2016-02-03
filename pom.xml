@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.jolokia.it</groupId>
@@ -16,7 +17,7 @@
   </modules>
 
   <properties>
-    <jolokia.version>1.2.2</jolokia.version>
+    <jolokia.version>1.3.2</jolokia.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -27,133 +28,76 @@
         <plugin>
           <groupId>org.jolokia</groupId>
           <artifactId>docker-maven-plugin</artifactId>
-          <version>0.9.8</version>
+          <version>0.13.8</version>
           <configuration>
-            <color>true</color>
-            <waitHttp>http://localhost:${jolokia.port}</waitHttp>
-            <wait>10000</wait>
             <autoPull>true</autoPull>
-            <ports>
-              <port>jolokia.port:${server.port}</port>
-            </ports>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
 
-  <repositories>
-    <repository>
-      <id>consol-labs-release</id>
-      <url>http://labs.consol.de/maven/repository/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <!-- Policy: always, daily, interval:xxx (xxx=#minutes, 60*24*7=10080), never -->
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>consol-labs-release</id>
-      <url>http://labs.consol.de/maven/repository/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <!-- ========================================================================================== -->
   <!-- Server Profiles -->
 
-
-
-   <profiles>
-     <profile>
-       <id>default</id>
-       <build>
-         <plugins>
-           <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-enforcer-plugin</artifactId>
-             <version>1.3.1</version>
-             <executions>
-               <execution>
-                 <id>enforce-versions</id>
-                 <goals>
-                   <goal>enforce</goal>
-                 </goals>
-                 <configuration>
-                   <rules>
-                     <requireActiveProfile>
-                       <message>
+  <profiles>
+    <profile>
+      <id>default</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.3.1</version>
+            <executions>
+              <execution>
+                <id>enforce-versions</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireActiveProfile>
+                      <message>
 =======================================================
 One of the following profiles must be specified via -P:
 
-      "tomcat"   -- Apache Tomcat
-      "jetty"    -- Eclipse Jetty
+"tomcat" -- Apache Tomcat
+"jetty" -- Eclipse Jetty
 
 =======================================================
-                       </message>
-                       <profiles>tomcat,jetty</profiles>
-                       <all>false</all>
-                     </requireActiveProfile>
-                   </rules>
-                 </configuration>
-               </execution>
-             </executions>
-           </plugin>
-         </plugins>
-       </build>
-       <activation><activeByDefault>true</activeByDefault></activation>
-     </profile>
+                      </message>
+                      <profiles>tomcat,jetty</profiles>
+                      <all>false</all>
+                    </requireActiveProfile>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
 
+    <profile>
+      <id>tomcat</id>
+      <properties>
+        <server.version>8.0</server.version>
+        <server.port>8080</server.port>
+        <server.image>consol/tomcat-${server.version}</server.image>
+      </properties>
+    </profile>
 
-   <profile>
-       <id>tomcat</id>
-       <properties>
-         <server.version>8.0</server.version>
-         <server.port>8080</server.port>
-       </properties>
-       <build>
-         <plugins>
-           <plugin>
-             <groupId>org.jolokia</groupId>
-             <artifactId>docker-maven-plugin</artifactId>
-             <configuration>
-               <image>consol/tomcat-${server.version}:8.0.9</image>
-             </configuration>
-           </plugin>
-         </plugins>
-       </build>
-     </profile>
-   </profiles>
+    <profile>
+      <id>jetty</id>
+      <properties>
+        <server.version>9</server.version>
+        <server.port>8080</server.port>
+        <server.image>consol/jetty-${server.version}</server.image>
+      </properties>
+    </profile>
+  </profiles>
 </project>

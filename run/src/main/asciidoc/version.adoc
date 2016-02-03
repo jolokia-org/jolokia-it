@@ -1,0 +1,29 @@
+= Version
+
+The `version` command allows you query information about the agent itself and
+get some information about the environment the agent is running in
+
+== Get Request
+
+.Request
+include::{snippets}/version-doc/get/http-request.adoc[]
+
+.Response
+include::{snippets}/version-doc/get/http-response.adoc[]
+
+.Response Fields
+include::{snippets}/version-doc/get/response-fields.adoc[]
+
+== Post Request
+
+.Request
+include::{snippets}/version-doc/post/http-request.adoc[]
+
+.Request Fields
+include::{snippets}/version-doc/post/response-fields.adoc[]
+
+.Response
+include::{snippets}/version-doc/post/http-response.adoc[]
+
+.Response Fields
+include::{snippets}/version-doc/post/response-fields.adoc[]

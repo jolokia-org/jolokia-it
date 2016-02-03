@@ -21,7 +21,8 @@
 
   <properties>
     <test.base>.</test.base>
-    <jolokia.url>http://localhost:${jolokia.port}/jolokia</jolokia.url>
+    <jolokia.url>http://${docker.host.address}:${jolokia.port}/jolokia</jolokia.url>
+    <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
   </properties>
 
   <dependencies>
@@ -49,27 +50,39 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>2.3.2</version>
+      <version>2.4.5</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.jayway.restassured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>2.3.2</version>
+      <version>2.8.0</version>
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.fusesource.jansi</groupId>
+      <artifactId>jansi</artifactId>
+      <version>1.11</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.restdocs</groupId>
+      <artifactId>spring-restdocs-restassured</artifactId>
+      <version>1.1.0.BUILD-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
   <build>
-
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>1.2</version>
+        <version>1.5</version>
         <executions>
           <execution>
             <goals>
@@ -78,6 +91,7 @@
           </execution>
         </executions>
       </plugin>
+
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -89,7 +103,7 @@
 
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.17</version>
+        <version>2.19.1</version>
         <executions>
           <execution>
             <id>integration-tests</id>
@@ -105,7 +119,7 @@
             <!-- Needs to be repeated here (doesn't work when the next line is omitted although it should)
                  Maven, you little sneaky beast ... -->
             <jolokia.port>${jolokia.port}</jolokia.port>
-            <jolokia.url>http://localhost:${jolokia.port}/jolokia</jolokia.url>
+            <jolokia.url>${jolokia.url}</jolokia.url>
             <jolokia.version>${jolokia.version}</jolokia.version>
           </systemPropertyVariables>
         </configuration>
@@ -119,6 +133,7 @@
             <id>start</id>
             <phase>pre-integration-test</phase>
             <goals>
+              <goal>build</goal>
               <goal>start</goal>
             </goals>
           </execution>
@@ -131,13 +146,99 @@
           </execution>
         </executions>
         <configuration>
-          <assemblyDescriptor>src/main/assembly/jolokia-war-deploy.xml</assemblyDescriptor>
-          <waitHttp>http://localhost:${jolokia.port}</waitHttp>
-          <wait>10000</wait>
-          <autoPull>true</autoPull>
+          <images>
+            <image>
+              <!-- Jolokia Data container -->
+              <name>jolokia/jolokia-agents:${jolokia.version}</name>
+              <alias>jolokia</alias>
+              <build>
+                <assembly>
+                  <basedir>/app</basedir>
+                  <descriptor>jolokia-war-deploy.xml</descriptor>
+                </assembly>
+              </build>
+            </image>
+            <image>
+              <name>${server.image}</name>
+              <alias>server</alias>
+              <run>
+                <volumes>
+                  <from>
+                    <image>jolokia</image>
+                  </from>
+                </volumes>
+                <env>
+                  <DEPLOY_DIR>/app</DEPLOY_DIR>
+                </env>
+                <ports>
+                  <port>jolokia.port:${server.port}</port>
+                </ports>
+                <wait>
+                  <!-- The plugin waits until this URL is reachable via HTTP ... -->
+                  <url>${jolokia.url}</url>
+                  <time>20000</time>
+                </wait>
+              </run>
+            </image>
+          </images>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 
+  <repositories>
+    <repository>
+      <id>spring-snapshot</id>
+      <name>Spring Snapshot Repository</name>
+      <url>https://repo.spring.io/snapshot/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <profiles>
+    <profile>
+      <id>doc</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.19.1</version>
+            <configuration>
+              <includes>
+                <include>**/*Doc.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <version>1.5.2</version>
+            <executions>
+              <execution>
+                <id>generate-docs</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>process-asciidoc</goal>
+                </goals>
+                <configuration>
+                  <backend>html</backend>
+                  <doctype>book</doctype>
+                  <attributes>
+                    <snippets>${snippetsDirectory}</snippets>
+                  </attributes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

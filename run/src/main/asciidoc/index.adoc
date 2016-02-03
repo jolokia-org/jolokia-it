@@ -1,0 +1,19 @@
+= Jolokia HTTP API
+Roland Huß
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+:github: https://github.com/rhuss/jolokia
+:source: {github}/tree/{branch-or-tag}
+
+[[abstract]]
+
+Jolokia is a JMX-HTTP bridge giving an alternative to JSR-160 connectors. It is an agent based
+approach with support for many platforms. This document explains Jolokkia's HTTP API in details.
+
+include::version.adoc[]
+
