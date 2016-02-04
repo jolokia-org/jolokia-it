@@ -3,6 +3,8 @@ machine:
     - docker
   java:
     version: oraclejdk8
+dependencies:
+  override:
 test:
   pre:
     - mvn -Ptile clean install
