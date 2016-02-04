@@ -15,6 +15,7 @@ import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.restassured.RestDocumentationFilter
 import org.springframework.restdocs.snippet.Snippet
 
+import static com.jayway.restassured.RestAssured.given
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
@@ -43,7 +44,7 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
  * @author roland
  * @since 03/02/16
  */
-class BaseJolokiaDocumentation extends BaseJolokiaTest {
+class BaseJolokiaDocumentation {
 
   @Rule
   public RestDocumentation restDocumentation = new RestDocumentation("target/generated-snippets");
@@ -57,14 +58,8 @@ class BaseJolokiaDocumentation extends BaseJolokiaTest {
             addFilter(documentationConfiguration(this.restDocumentation)).
             build();
     this.doc = document "{class-name}/{method-name}",
-                        preprocessRequest(
-                                prettyPrint(),
-                                manageHeaders()),
-                        preprocessResponse(
-                                prettyPrint(),
-                                manageHeaders())
-
-
+               preprocessRequest(prettyPrint(), manageHeaders()),
+               preprocessResponse(prettyPrint(), manageHeaders())
   }
 
   // Can be overridden
@@ -94,7 +89,7 @@ class BaseJolokiaDocumentation extends BaseJolokiaTest {
       doc.snippets(docSnippets)
     }
     spec.filter(doc)
-    return super.jolokiaGiven(spec);
+    return given(spec).baseUri(System.getProperty("jolokia.url"))
   }
 
   static List<FieldDescriptor> commonResponseFields() {

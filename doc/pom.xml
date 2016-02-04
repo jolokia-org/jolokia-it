@@ -5,12 +5,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.jolokia.it</groupId>
-  <artifactId>jolokia-it-run</artifactId>
+  <artifactId>jolokia-it-doc</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Jolokia :: IT :: Run</name>
+  <name>Jolokia :: IT :: API Doc</name>
 
   <parent>
     <groupId>org.jolokia.it</groupId>
@@ -22,10 +21,10 @@
   <properties>
     <jolokia.url>http://${docker.host.address}:${jolokia.port}/jolokia</jolokia.url>
     <docker.maven.plugin.version>0.13.8</docker.maven.plugin.version>
+    <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -48,11 +47,12 @@
     </dependency>
 
     <dependency>
-      <groupId>org.fusesource.jansi</groupId>
-      <artifactId>jansi</artifactId>
-      <version>1.11</version>
+      <groupId>org.springframework.restdocs</groupId>
+      <artifactId>spring-restdocs-restassured</artifactId>
+      <version>1.1.0.BUILD-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>
@@ -91,6 +91,9 @@
           </execution>
         </executions>
         <configuration>
+          <includes>
+            <include>**/*Doc.java</include>
+          </includes>
           <testClassesDirectory>target/test-classes</testClassesDirectory>
           <systemPropertyVariables>
             <!-- Needs to be repeated here (doesn't work when the next line is omitted although it should)
@@ -100,6 +103,28 @@
             <jolokia.version>${jolokia.version}</jolokia.version>
           </systemPropertyVariables>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.asciidoctor</groupId>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>1.5.2</version>
+        <executions>
+          <execution>
+            <id>generate-docs</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>process-asciidoc</goal>
+            </goals>
+            <configuration>
+              <backend>html</backend>
+              <doctype>book</doctype>
+              <attributes>
+                <snippets>${snippetsDirectory}</snippets>
+              </attributes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -130,87 +155,28 @@
         <artifactId>tiles-maven-plugin</artifactId>
         <version>2.7</version>
         <extensions>true</extensions>
+        <configuration>
+          <tiles>
+            <tile>org.jolokia.it:jolokia-it-tile-tomcat:[1.0-SNAPSHOT,2)</tile>
+          </tiles>
+        </configuration>
       </plugin>
+
     </plugins>
   </build>
 
-  <!-- ========================================================================================== -->
-  <!-- Server Profiles -->
+  <repositories>
+    <repository>
+      <id>spring-snapshot</id>
+      <name>Spring Snapshot Repository</name>
+      <url>https://repo.spring.io/snapshot/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 
-  <profiles>
-    <profile>
-      <id>default</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>1.3.1</version>
-            <executions>
-              <execution>
-                <id>enforce-versions</id>
-                <goals>
-                  <goal>enforce</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <requireActiveProfile>
-                      <message>
-=======================================================
-One of the following profiles must be specified via -P:
-
-"tomcat" -- Apache Tomcat
-"jetty" -- Eclipse Jetty
-
-=======================================================
-                      </message>
-                      <profiles>tomcat,jetty</profiles>
-                      <all>false</all>
-                    </requireActiveProfile>
-                  </rules>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-
-    <profile>
-      <id>tomcat</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.repaint.maven</groupId>
-            <artifactId>tiles-maven-plugin</artifactId>
-            <configuration>
-              <tiles>
-                <tile>org.jolokia.it:jolokia-it-tile-tomcat:[1.0-SNAPSHOT,2)</tile>
-              </tiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>jetty</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.repaint.maven</groupId>
-            <artifactId>tiles-maven-plugin</artifactId>
-            <configuration>
-              <tiles>
-                <tile>org.jolokia.it:jolokia-it-tile-jetty:[1.0-SNAPSHOT,2)</tile>
-              </tiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

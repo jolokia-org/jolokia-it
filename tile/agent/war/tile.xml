@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <dependencies>
+    <dependency>
+      <groupId>org.jolokia</groupId>
+      <artifactId>jolokia-war</artifactId>
+      <type>war</type>
+      <version>${jolokia.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jolokia.it</groupId>
+      <artifactId>jolokia-it-support-war</artifactId>
+      <type>war</type>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images combine.children="append">
+            <image>
+              <!-- Jolokia Data container -->
+              <name>jolokia/jolokia-agents-war:${jolokia.version}</name>
+              <alias>jolokia</alias>
+              <build>
+                <assembly>
+                  <basedir>/app</basedir>
+                  <inline>
+                    <dependencySets>
+                      <dependencySet>
+                        <includes>
+                          <include>org.jolokia:jolokia-war</include>
+                        </includes>
+                        <outputDirectory>.</outputDirectory>
+                        <outputFileNameMapping>jolokia.war</outputFileNameMapping>
+                        <useProjectArtifact>false</useProjectArtifact>
+                      </dependencySet>
+                      <dependencySet>
+                        <includes>
+                          <include>org.jolokia.it:jolokia-it-support-war</include>
+                        </includes>
+                        <outputDirectory>.</outputDirectory>
+                        <outputFileNameMapping>jolokia-it.war</outputFileNameMapping>
+                        <useProjectArtifact>false</useProjectArtifact>
+                      </dependencySet>
+                    </dependencySets>
+                  </inline>
+                </assembly>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

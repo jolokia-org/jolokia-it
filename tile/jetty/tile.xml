@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <properties>
+    <!-- Default server version -->
+    <server.version>9</server.version>
+    <server.port>8080</server.port>
+    <server.image>consol/jetty-${server.version}</server.image>
+  </properties>
+
+  <tiles>
+    <tile>org.jolokia.it:jolokia-it-tile-base-servlet:[1.0-SNAPSHOT,2)</tile>
+  </tiles>
+
+</project>

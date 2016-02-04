@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images combine.children="append">
+            <image>
+              <name>${server.image}</name>
+              <alias>server</alias>
+              <run>
+                <volumes>
+                  <from>
+                    <image>jolokia</image>
+                  </from>
+                </volumes>
+                <env>
+                  <DEPLOY_DIR>/app</DEPLOY_DIR>
+                </env>
+                <ports>
+                  <port>jolokia.port:${server.port}</port>
+                </ports>
+                <wait>
+                  <!-- The plugin waits until this URL is reachable via HTTP ... -->
+                  <url>${jolokia.url}</url>
+                  <time>20000</time>
+                </wait>
+              </run>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <tiles>
+    <tile>org.jolokia.it:jolokia-it-tile-agent-war:[1.0-SNAPSHOT,2)</tile>
+  </tiles>
+
+</project>

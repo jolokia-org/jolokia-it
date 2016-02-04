@@ -33,21 +33,21 @@ class VersionDoc extends BaseJolokiaDocumentation {
 
   @Test
   public void get() {
-    jolokiaGiven(responseFields()).get("/version")
+    jolokiaGiven(resp()).get("/version")
   }
 
   @Test
   public void post() {
-    jolokiaGiven(responseFields(),requestFields()).
+    jolokiaGiven(resp(), req()).
             body([ type: "version" ]).
             post()
   }
 
-  static Snippet requestFields() {
+  static Snippet req() {
     return requestFields(commonRequestFields("version") as FieldDescriptor[]);
   }
 
-  static Snippet responseFields() {
+  static Snippet resp() {
     return responseFields([
              *commonResponseFields(),
              f("value","Meta and configuration information about this agent"),
