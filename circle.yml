@@ -5,6 +5,6 @@ machine:
     version: openjdk8
 test:
   pre:
-    - mvn -Ptile clean installWorked
+    - mvn -Ptile clean install
   override:
     - mvn -Ptomcat clean install
