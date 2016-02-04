@@ -10,5 +10,4 @@ test:
   pre:
     - mvn -Ptile clean install
   override:
-    - sleep 3610
-    - mvn -Ptomcat -Ddocker.keepContainer clean install -e
+    - mvn -Pjetty -Ddocker.keepContainer clean install -e
