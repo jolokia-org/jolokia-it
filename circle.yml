@@ -1,0 +1,10 @@
+machine:
+  services:
+    - docker
+  java:
+    version: openjdk8
+test:
+  pre:
+    - mvn -Ptile clean installWorked
+  override:
+    - mvn -Ptomcat clean install
