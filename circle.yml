@@ -5,7 +5,7 @@ machine:
     version: oraclejdk8
 dependencies:
   override:
-    - true
+    - echo "No prefetch of dependencies"
 test:
   pre:
     - mvn -Ptile clean install
