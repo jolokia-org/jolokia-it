@@ -5,6 +5,7 @@ machine:
     version: oraclejdk8
 dependencies:
   override:
+    - true
 test:
   pre:
     - mvn -Ptile clean install
