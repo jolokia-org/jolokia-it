@@ -20,7 +20,6 @@
   </parent>
 
   <properties>
-    <jolokia.url>http://${docker.host.address}:${jolokia.port}/jolokia</jolokia.url>
     <docker.maven.plugin.version>0.13.8</docker.maven.plugin.version>
   </properties>
 
@@ -102,7 +101,7 @@
             <!-- Needs to be repeated here (doesn't work when the next line is omitted although it should)
                  Maven, you little sneaky beast ... -->
             <jolokia.port>${jolokia.port}</jolokia.port>
-            <jolokia.url>${jolokia.url}</jolokia.url>
+            <jolokia.url>http://${docker.host.address}:${jolokia.port}/jolokia/</jolokia.url>
             <jolokia.version>${jolokia.version}</jolokia.version>
           </systemPropertyVariables>
         </configuration>

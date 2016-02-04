@@ -25,7 +25,7 @@
                 </ports>
                 <wait>
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
-                  <url>${jolokia.url}</url>
+                  <url>http://${docker.host.address}:${jolokia.port}/jolokia</url>
                   <time>20000</time>
                 </wait>
               </run>
