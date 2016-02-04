@@ -10,4 +10,4 @@ test:
   pre:
     - mvn -Ptile clean install
   override:
-    - mvn -Ptomcat clean install
+    - mvn -Ptomcat clean install -X
