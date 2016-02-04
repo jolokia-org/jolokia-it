@@ -11,7 +11,3 @@ test:
     - mvn -Ptile clean install
   override:
     - mvn -Pjetty -Dserver.version=9 -Ddocker.keepContainer clean install -e
-    - mvn -Pjetty -Dserver.version=8 -Ddocker.keepContainer clean install -e
-    - mvn -Pjetty -Dserver.version=7 -Ddocker.keepContainer clean install -e
-    - mvn -Ptomcat -Dserver.version=8 -Ddocker.keepContainer clean install -e
-    - mvn -Ptomcat -Dserver.version=7 -Ddocker.keepContainer clean install -e
