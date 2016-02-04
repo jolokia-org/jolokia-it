@@ -129,12 +129,12 @@ public class AttributeChecking implements AttributeCheckingMBean,MBeanRegistrati
         return (long) (1.99 * 1024 * 1024 * 1024);
     }
 
-    public float getLongSeconds() {
+    public long getLongSeconds() {
         // 2 days
         return 60*60*24*2;
     }
 
-    public double getSmallMinutes() {
+    public double getSmallDouble() {
         // 10 ms
         return  1f/60 * 0.01;
     }

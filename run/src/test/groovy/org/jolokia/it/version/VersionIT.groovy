@@ -48,6 +48,7 @@ class VersionIT extends BaseJolokiaTest {
             response();
 
     printInfo(resp)
+
   }
 
   private printInfo(Response resp) {

@@ -46,9 +46,9 @@ public interface AttributeCheckingMBean {
 
     long getMemoryMax();
     
-    float getLongSeconds();
+    long getLongSeconds();
 
-    double getSmallMinutes();
+    double getSmallDouble();
 
     String[] getStringArray();
 
