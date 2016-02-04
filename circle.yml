@@ -10,4 +10,4 @@ test:
   pre:
     - mvn -Ptile clean install
   override:
-    - mvn -Ptomcat -Ddocker.keepContainer clean install -X
+    - mvn -Ptomcat -Ddocker.keepContainer clean install -e
