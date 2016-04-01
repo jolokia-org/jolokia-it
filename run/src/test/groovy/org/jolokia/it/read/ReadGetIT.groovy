@@ -1,10 +1,8 @@
 package org.jolokia.it.read
 
-import com.jayway.restassured.response.ValidatableResponse
-import org.jolokia.it.AttributeChecking
+import com.consol.citrus.annotations.CitrusTest
 
 /*
- * 
  * Copyright 2016 Roland Huss
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +17,8 @@ import org.jolokia.it.AttributeChecking
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import com.consol.citrus.dsl.builder.ReceiveMessageBuilder
+import org.jolokia.it.AttributeChecking
 import org.jolokia.it.BaseJolokiaTest
 import org.jolokia.it.Chili
 import org.junit.Test
@@ -38,120 +37,129 @@ public class ReadGetIT extends BaseJolokiaTest {
     def attributeMBean = new AttributeChecking("jolokia.it");
 
     @Test
+    @CitrusTest
     void simple() {
         prepareReadThen("jolokia.it:type=attribute/LongSeconds")
-                .body("value",equalTo((int) attributeMBean.getLongSeconds()))
+                .validate("\$.value", attributeMBean.getLongSeconds());
     }
 
     @Test
+    @CitrusTest
     void withMultipleAttributes() {
         reset()
         prepareReadThen("jolokia.it:type=attribute/Bytes,State")
-                .body("value.Bytes",equalTo((int) attributeMBean.getBytes()))
-                .body("value.State",is(true))
-                .body("value.size()",equalTo(2))
+                .validate("\$.value.Bytes", attributeMBean.getBytes())
+                .validate("\$.value.State", true)
+                .validate("\$.value.size()", 2)
     }
 
     @Test
+    @CitrusTest
     void withAllAttributes() {
         reset()
         prepareReadThen("jolokia.it:type=attribute")
-                .body("value.Bytes",equalTo((int) attributeMBean.getBytes()))
-                .body("value.State",is(true))
-                .body("value.LongSeconds",equalTo((int) attributeMBean.getLongSeconds()))
-                .body("value.size()",greaterThan(3))
+                .validate("\$.value.Bytes", attributeMBean.getBytes())
+                .validate("\$.value.State", true)
+                .validate("\$.value.LongSeconds", attributeMBean.getLongSeconds())
+                .validate("\$.value.size()", greaterThan(3))
     }
 
     @Test
+    @CitrusTest
     void wildcardPatternWithAllAttributes() {
         prepareReadThen("jolokia.it:*")
-                .body("value['jolokia.it:type=attribute'].Bytes",equalTo((int) attributeMBean.getBytes()))
-                .body("value.size()",greaterThan(1))
+                .validate("\$.value['jolokia.it:type=attribute'].Bytes", attributeMBean.getBytes())
+                .validate("\$.value.size()", greaterThan(1))
     }
 
     @Test
+    @CitrusTest
     void wildcardPatternWithSomeAttributes() {
         reset()
         prepareReadThen("jolokia.it:*/Bytes,State")
-                .body("value['jolokia.it:type=attribute'].Bytes",equalTo((int) attributeMBean.getBytes()))
-                .body("value['jolokia.it:type=attribute'].State",is(true))
-                .body("value['jolokia.it:type=attribute'].keySet().size()",equalTo(2))
-                .body("value.size()",equalTo(1))
+                .validate("\$.value['jolokia.it:type=attribute'].Bytes", attributeMBean.getBytes())
+                .validate("\$.value['jolokia.it:type=attribute'].State", true)
+                .validate("\$.value['jolokia.it:type=attribute'].keySet()", hasSize(2))
+                .validate("\$.value.size()", 1)
     }
 
     @Test
+    @CitrusTest
     void wildcardPatternWithSingleAttribute() {
         prepareReadThen("jolokia.it:*/SmallDouble")
-                .body("value['jolokia.it:type=attribute'].SmallDouble",equalTo((float) attributeMBean.getSmallDouble()))
-                .body("value['jolokia.it:type=attribute'].keySet().size()",equalTo(1))
-                .body("value.size()",equalTo(1))
+                .validate("\$.value['jolokia.it:type=attribute'].SmallDouble", attributeMBean.getSmallDouble())
+                .validate("\$.value['jolokia.it:type=attribute'].keySet()", hasSize(1))
+                .validate("\$.value.size()", 1)
     }
 
     @Test
+    @CitrusTest
     void objectNameSerialization() {
         prepareReadThen("jolokia.it:type=attribute/ObjectName")
-                .body("value.objectName",equalTo(attributeMBean.getObjectName().getCanonicalName()))
-                .body("value.size()",equalTo(1))
+                .validate("\$.value.objectName", attributeMBean.getObjectName().getCanonicalName())
+                .validate("\$.value.size()", 1)
     }
 
     @Test
+    @CitrusTest
     void setAsList() {
         prepareReadThen("jolokia.it:type=attribute/Set")
-                .body("value",isA(List.class))
-                .body("value",contains("habanero","jolokia"))
+                .validate("\$.value", contains("habanero", "jolokia"))
     }
 
     @Test
+    @CitrusTest
     void utf8() {
         prepareReadThen("jolokia.it:type=attribute/Utf8Content")
-                .body("value",equalTo("☯"))
+                .validate("\$.value", "☯")
     }
 
     @Test
+    @CitrusTest
     void enumSerialization() {
         prepareReadThen("jolokia.it:type=attribute/Chili")
-                .body("value",equalTo(Chili.AJI.name()))
+                .validate("\$.value", Chili.AJI.name())
     }
 
     @Test
+    @CitrusTest
     void jsonMbeanAll() {
         prepareReadThen("jolokia.it.jsonmbean:type=plain")
-                .body("value.Data.set",contains(12,14))
-                .body("value.keySet().size()",equalTo(1))
-                .body("value.Data.size()",greaterThan(1))
-
+                .validate("\$.value.Data.set", contains(12L, 14L))
+                .validate("\$.value.keySet()", hasSize(1))
+                .validate("\$.value.Data.size()", greaterThan(1))
     }
 
     @Test
+    @CitrusTest
     void tabularData() {
         prepareReadThen("jolokia.it:type=tabularData/Table2/Value0.0/Value0.1")
-                .body("value.Column1",equalTo("Value0.0"))
-                .body("value.Column2",equalTo("Value0.1"))
-                .body("value.Column3",equalTo("Value0.2"))
-                .body("value.size()",equalTo(3))
+                .validate("\$.value.Column1", "Value0.0")
+                .validate("\$.value.Column2", "Value0.1")
+                .validate("\$.value.Column3", "Value0.2")
+                .validate("\$.value.size()", 3)
     }
 
     @Test
+    @CitrusTest
     void mxBeanWithComplexKey() {
         prepareReadThen("jolokia.it:type=mxbean/MapWithComplexKey")
-                .body("value.size()",equalTo(2))
-                .body("value.indexNames[0]",equalTo("key"))
-                .body("value.values.size()",equalTo(2))
-                .body("value.values[0].key.number",anyOf(equalTo(1),equalTo(2)))
+                .validate("\$.value.size()", 2)
+                .validate("\$.value.indexNames[0]", "key")
+                .validate("\$.value.values.size()", 2)
+                .validate("\$.value.values[0].key.number", anyOf(equalTo(1L),equalTo(2L)));
     }
 
     // =============================================================================
 
-    private ValidatableResponse prepareReadThen(String request) {
-        return jolokiaGiven()
-                .when()
-                   .get("/read/" + request)
-                .then()
-                   .spec(jolokiaBaseSpec("read"))
+    private ReceiveMessageBuilder prepareReadThen(String request) {
+        jolokiaClient().get("/read/" + request);
+
+        return jolokiaResponse("read");
     }
 
     private void reset() {
         // needed for any test accessing 'State'
-        jolokiaGiven().get("/exec/jolokia.it:type=attribute/reset")
+        jolokiaClient().get("/exec/jolokia.it:type=attribute/reset")
     }
 }

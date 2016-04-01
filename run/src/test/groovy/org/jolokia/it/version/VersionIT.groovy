@@ -1,6 +1,8 @@
 package org.jolokia.it.version
 
-import com.jayway.restassured.response.Response
+import com.consol.citrus.actions.AbstractTestAction
+import com.consol.citrus.annotations.CitrusTest
+import com.consol.citrus.context.TestContext
 import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.AnsiConsole
 import org.jolokia.it.BaseJolokiaTest
@@ -12,63 +14,60 @@ import static org.fusesource.jansi.Ansi.ansi
 import static org.hamcrest.Matchers.*
 
 /**
- *
  * @author roland
  * @since 11.06.14
  */
-class VersionIT extends BaseJolokiaTest {
+public class VersionIT extends BaseJolokiaTest {
 
+    private String SEP = c("====================================================",BLUE)
+    private String P = c("===",BLUE)
 
-  private String SEP = c("====================================================",BLUE)
-  private String P = c("===",BLUE)
-
-  @BeforeClass
-  static void initColor() {
-    if (System.console() != null) {
-      AnsiConsole.systemInstall()
-      Ansi.setEnabled(true)
+    @BeforeClass
+    static void initColor() {
+        if (System.console() != null) {
+            AnsiConsole.systemInstall()
+            Ansi.setEnabled(true)
+        }
     }
-  }
 
-  @Test
-  void version() {
-    Response resp =
-    jolokiaGiven().
-    when().
-            get("/version").
-    then().
-            //log().all().
-            spec(jolokiaBaseSpec("version")).
-            root("value").
-            body("agent", equalTo(System.getProperty("jolokia.version").replaceAll("-SNAPSHOT", ""))).
-            body("protocol", notNullValue()).
-            body("info.keySet()",hasItems("product", "vendor", "version")).
-            body("config",notNullValue()).
-    extract().
-            response();
+    @Test
+    @CitrusTest
+    void version() {
+        jolokiaClient().get("/version");
+        jolokiaResponse("version")
+                .validate("\$.value.agent", System.getProperty("jolokia.version").replaceAll("-SNAPSHOT", ""))
+                .validate("\$.value.protocol", notNullValue())
+                .validate("\$.value.info.keySet()", hasItems("product", "vendor", "version"))
+                .validate("\$.value.config", notNullValue())
+                .extractFromPayload("\$.value.agent", "agent")
+                .extractFromPayload("\$.value.protocol", "protocol")
+                .extractFromPayload("\$.value.info.product", "info.product")
+                .extractFromPayload("\$.value.info.version", "info.version")
+                .extractFromPayload("\$.value.info.vendor", "info.vendor")
+                .extractFromPayload("\$.value.config.agentType", "config.agentType");
 
-    printInfo(resp)
+        printInfo()
+    }
 
-  }
-
-  private printInfo(Response resp) {
-    println """
+    private printInfo() {
+        action(new AbstractTestAction() {
+            @Override
+            void doExecute(TestContext context) {
+                println """
 $SEP
-$P ${c("Jolokia", CYAN)} ${c(resp, "agent", CYAN)}
+$P ${c("Jolokia", CYAN)} ${c(context.getVariable("agent"), CYAN)}
 $P
-$P Server:   ${c(resp, "info.product", YELLOW)} ${c(resp, "info.version", YELLOW)} (${resp.path("value.info.vendor")})
-$P Protocol: ${resp.path("value.protocol")}
-$P Type:     ${resp.path("value.config.agentType")}
+$P Server:   ${c(context.getVariable("info.product"), YELLOW)} ${c(context.getVariable("info.version"), YELLOW)} (${context.getVariable("info.vendor")})
+$P Protocol: ${context.getVariable("protocol")}
+$P Type:     ${context.getVariable("config.agentType")}
 $SEP
 """
-  }
+            }
+        });
+    }
 
-  private static String c(String msg, Ansi.Color color) {
-    Ansi ansi = ansi().fg(color)
-    return ansi.a(msg).reset().toString()
-  }
-
-  private static String c(Response response, String key, Ansi.Color color) {
-    return c(response.path("value." + key).toString(),color);
-  }
+    private static String c(String msg, Ansi.Color color) {
+        Ansi ansi = ansi().fg(color)
+        return ansi.a(msg).reset().toString()
+    }
 }
