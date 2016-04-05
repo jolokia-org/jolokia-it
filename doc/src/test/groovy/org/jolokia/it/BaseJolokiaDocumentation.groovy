@@ -1,7 +1,10 @@
 package org.jolokia.it
 
-import com.jayway.restassured.builder.RequestSpecBuilder
-import com.jayway.restassured.specification.RequestSpecification
+import com.consol.citrus.dsl.builder.HttpClientActionBuilder
+import com.consol.citrus.dsl.endpoint.CitrusEndpoints
+import com.consol.citrus.dsl.junit.JUnit4CitrusTestDesigner
+import com.consol.citrus.http.client.HttpClient
+import com.consol.citrus.restdocs.RestDocClientInterceptor
 import org.junit.Before
 import org.junit.Rule
 import org.springframework.http.HttpHeaders
@@ -12,17 +15,11 @@ import org.springframework.restdocs.operation.OperationResponse
 import org.springframework.restdocs.operation.OperationResponseFactory
 import org.springframework.restdocs.operation.preprocess.OperationPreprocessor
 import org.springframework.restdocs.payload.FieldDescriptor
-import org.springframework.restdocs.restassured.RestDocumentationFilter
 import org.springframework.restdocs.snippet.Snippet
 
-import static com.jayway.restassured.RestAssured.given
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
+import static com.consol.citrus.restdocs.CitrusRestDocsSupport.*
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration
-
 /*
  * 
  * Copyright 2015 Roland Huss
@@ -44,22 +41,24 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
  * @author roland
  * @since 03/02/16
  */
-class BaseJolokiaDocumentation {
+class BaseJolokiaDocumentation extends JUnit4CitrusTestDesigner {
 
   @Rule
   public RestDocumentation restDocumentation = new RestDocumentation("target/generated-snippets");
-  private RequestSpecification spec;
 
-  RestDocumentationFilter doc;
+  private static HttpClient jolokiaClient;
+
+  private RestDocClientInterceptor doc;
 
   @Before
   public void setUp() {
-    this.spec = new RequestSpecBuilder().
-            addFilter(documentationConfiguration(this.restDocumentation)).
-            build();
-    this.doc = document "{class-name}/{method-name}",
-               preprocessRequest(prettyPrint(), manageHeaders()),
-               preprocessResponse(prettyPrint(), manageHeaders())
+    doc = restDocsInterceptor("{class-name}/{method-name}", preprocessRequest(prettyPrint(), manageHeaders()), preprocessResponse(prettyPrint(), manageHeaders()));
+
+    jolokiaClient = CitrusEndpoints.http()
+            .client()
+            .interceptors(Arrays.asList(restDocsConfigurer(this.restDocumentation), doc))
+            .requestUrl(System.getProperty("jolokia.url"))
+            .build();
   }
 
   // Can be overridden
@@ -84,12 +83,12 @@ class BaseJolokiaDocumentation {
     }
   }
 
-  RequestSpecification jolokiaGiven(Snippet ... docSnippets) {
+  protected HttpClientActionBuilder jolokiaClient(Snippet ... docSnippets) {
     if (docSnippets.length > 0) {
       doc.snippets(docSnippets)
     }
-    spec.filter(doc)
-    return given(spec).baseUri(System.getProperty("jolokia.url"))
+
+    return http().client(jolokiaClient);
   }
 
   static List<FieldDescriptor> commonResponseFields() {

@@ -1,6 +1,8 @@
 package org.jolokia.it.version
 
 import org.jolokia.it.BaseJolokiaDocumentation
+import com.consol.citrus.annotations.CitrusTest
+import com.consol.citrus.message.MessageType
 import org.junit.Test
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.snippet.Snippet
@@ -28,19 +30,20 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
  * @author roland
  * @since 03/02/16
  */
-
 class VersionDoc extends BaseJolokiaDocumentation {
 
   @Test
+  @CitrusTest
   public void get() {
-    jolokiaGiven(resp()).get("/version")
+    jolokiaClient(resp()).get("/version")
   }
 
   @Test
+  @CitrusTest
   public void post() {
-    jolokiaGiven(resp(), req()).
-            body([ type: "version" ]).
-            post()
+    jolokiaClient(resp(), req()).post()
+            .messageType(MessageType.JSON)
+            .payload('{ "type": "version" }')
   }
 
   static Snippet req() {
