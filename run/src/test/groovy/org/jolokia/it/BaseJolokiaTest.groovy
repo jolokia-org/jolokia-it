@@ -1,52 +1,43 @@
 package org.jolokia.it
 
-import com.jayway.restassured.RestAssured
-import com.jayway.restassured.builder.RequestSpecBuilder
-import com.jayway.restassured.builder.ResponseSpecBuilder
-import com.jayway.restassured.parsing.Parser
-import com.jayway.restassured.specification.RequestSpecification
-import com.jayway.restassured.specification.ResponseSpecification
-import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.AnsiConsole
-import org.junit.Before
+import com.consol.citrus.dsl.builder.HttpClientActionBuilder
+import com.consol.citrus.dsl.builder.ReceiveMessageBuilder
+import com.consol.citrus.dsl.endpoint.CitrusEndpoints
+import com.consol.citrus.dsl.junit.JUnit4CitrusTestDesigner
+import com.consol.citrus.http.client.HttpClient
+import com.consol.citrus.message.MessageType
 import org.junit.BeforeClass
+import org.springframework.http.HttpStatus
 
-import static com.jayway.restassured.RestAssured.*
-import static com.jayway.restassured.http.ContentType.JSON
-import static com.jayway.restassured.http.ContentType.TEXT
-import static com.jayway.restassured.matcher.RestAssuredMatchers.*
 import static org.hamcrest.Matchers.*
-
 /**
- *
  * @author roland
  * @since 11.06.14
  */
-class BaseJolokiaTest {
+class BaseJolokiaTest extends JUnit4CitrusTestDesigner {
 
-  protected ResponseSpecification jolokiaBaseSpec(String type) {
-    return new ResponseSpecBuilder().
-            expectStatusCode(200).
-            expectHeader("content-type", containsString(TEXT.toString())).
-            expectBody("request.type", equalTo(type)).
-            expectBody("timestamp", lessThanOrEqualTo((Integer) (System.currentTimeMillis() / 1000))).
-            expectBody("status", equalTo(200)).
-            expectBody("keySet()", hasItems("request","value","timestamp","status")).
+    private static HttpClient jolokiaClient;
 
-            build();
-  }
+    @BeforeClass
+    static void setup() {
+        jolokiaClient = CitrusEndpoints.http()
+                                .client()
+                                .requestUrl(System.getProperty("jolokia.url"))
+                                .build();
+    }
 
-  @BeforeClass
-  public static void setupParser() {
-    registerParser("text/plain", Parser.JSON);
-  }
+    protected ReceiveMessageBuilder jolokiaResponse(String type) {
+        return jolokiaClient()
+                 .response(HttpStatus.OK)
+                 .contentType("@contains('text')@")
+                 .messageType(MessageType.JSON)
+                 .validate("\$.request.type", type)
+                 .validate("\$.timestamp", lessThanOrEqualTo((Long) (System.currentTimeMillis() / 1000) + 1))
+                 .validate("\$.status", 200)
+                 .validate("\$.keySet()", hasItems("request","value","timestamp","status"));
+    }
 
-  protected RequestSpecification jolokiaGiven() {
-    return jolokiaGiven(null);
-  }
-
-  protected RequestSpecification jolokiaGiven(RequestSpecification spec) {
-    return (spec != null ? given(spec) : given()).
-            baseUri(System.getProperty("jolokia.url"));
-  }
+    protected HttpClientActionBuilder jolokiaClient() {
+        return http().client(jolokiaClient);
+    }
 }
