@@ -40,7 +40,7 @@ class VersionIT extends BaseJolokiaTest {
             //log().all().
             spec(jolokiaBaseSpec("version")).
             root("value").
-            body("agent", equalTo(System.getProperty("jolokia.version").replaceAll("-SNAPSHOT", ""))).
+            body("agent", equalTo(System.getProperty("jolokia.version"))).
             body("protocol", notNullValue()).
             body("info.keySet()",hasItems("product", "vendor", "version")).
             body("config",notNullValue()).

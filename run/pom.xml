@@ -20,7 +20,7 @@
   </parent>
 
   <properties>
-    <docker.maven.plugin.version>0.13.8</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
   </properties>
 
   <dependencies>
@@ -108,7 +108,7 @@
       </plugin>
 
       <plugin>
-        <groupId>org.jolokia</groupId>
+        <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <executions>
