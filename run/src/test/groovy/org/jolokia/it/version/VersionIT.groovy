@@ -35,7 +35,7 @@ public class VersionIT extends BaseJolokiaTest {
     void version() {
         jolokiaClient().get("/version");
         jolokiaResponse("version")
-                .validate("\$.value.agent", System.getProperty("jolokia.version").replaceAll("-SNAPSHOT", ""))
+                .validate("\$.value.agent", System.getProperty("jolokia.version"))
                 .validate("\$.value.protocol", notNullValue())
                 .validate("\$.value.info.keySet()", hasItems("product", "vendor", "version"))
                 .validate("\$.value.config", notNullValue())
