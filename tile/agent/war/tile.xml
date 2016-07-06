@@ -3,7 +3,7 @@
   <dependencies>
     <dependency>
       <groupId>org.jolokia</groupId>
-      <artifactId>jolokia-war</artifactId>
+      <artifactId>jolokia-agent-war</artifactId>
       <type>war</type>
       <version>${jolokia.version}</version>
     </dependency>
@@ -35,7 +35,7 @@
                     <dependencySets>
                       <dependencySet>
                         <includes>
-                          <include>org.jolokia:jolokia-war</include>
+                          <include>org.jolokia:jolokia-agent-war</include>
                         </includes>
                         <outputDirectory>.</outputDirectory>
                         <outputFileNameMapping>jolokia.war</outputFileNameMapping>

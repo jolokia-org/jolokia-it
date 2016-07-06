@@ -16,7 +16,8 @@ package org.jolokia.it;
  * limitations under the License.
  */
 
-import org.jolokia.jmx.JsonMBean;
+
+import org.jolokia.support.jmx.JsonMBean;
 
 /**
  * @author roland

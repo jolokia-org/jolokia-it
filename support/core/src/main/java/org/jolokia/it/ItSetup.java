@@ -21,7 +21,7 @@ import java.util.*;
 
 import javax.management.*;
 
-import org.jolokia.jmx.JolokiaMBeanServerUtil;
+import org.jolokia.support.jmx.JolokiaMBeanServerUtil;
 
 /**
  * @author roland
