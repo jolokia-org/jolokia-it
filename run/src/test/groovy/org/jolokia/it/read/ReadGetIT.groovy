@@ -40,7 +40,7 @@ public class ReadGetIT extends BaseJolokiaTest {
     @CitrusTest
     void simple() {
         prepareReadThen("jolokia.it:type=attribute/LongSeconds")
-                .validate("\$.value", attributeMBean.getLongSeconds());
+                .validate('$.value', attributeMBean.getLongSeconds());
     }
 
     @Test
@@ -48,9 +48,9 @@ public class ReadGetIT extends BaseJolokiaTest {
     void withMultipleAttributes() {
         reset()
         prepareReadThen("jolokia.it:type=attribute/Bytes,State")
-                .validate("\$.value.Bytes", attributeMBean.getBytes())
-                .validate("\$.value.State", true)
-                .validate("\$.value.size()", 2)
+                .validate('$.value.Bytes', attributeMBean.getBytes())
+                .validate('$.value.State', true)
+                .validate('$.value.size()', 2)
     }
 
     @Test
@@ -58,18 +58,18 @@ public class ReadGetIT extends BaseJolokiaTest {
     void withAllAttributes() {
         reset()
         prepareReadThen("jolokia.it:type=attribute")
-                .validate("\$.value.Bytes", attributeMBean.getBytes())
-                .validate("\$.value.State", true)
-                .validate("\$.value.LongSeconds", attributeMBean.getLongSeconds())
-                .validate("\$.value.size()", greaterThan(3))
+                .validate('$.value.Bytes', attributeMBean.getBytes())
+                .validate('$.value.State', true)
+                .validate('$.value.LongSeconds', attributeMBean.getLongSeconds())
+                .validate('$.value.size()', greaterThan(3))
     }
 
     @Test
     @CitrusTest
     void wildcardPatternWithAllAttributes() {
         prepareReadThen("jolokia.it:*")
-                .validate("\$.value['jolokia.it:type=attribute'].Bytes", attributeMBean.getBytes())
-                .validate("\$.value.size()", greaterThan(1))
+                .validate('$.value["jolokia.it:type=attribute"].Bytes', attributeMBean.getBytes())
+                .validate('$.value.size()', greaterThan(1))
     }
 
     @Test
@@ -77,77 +77,77 @@ public class ReadGetIT extends BaseJolokiaTest {
     void wildcardPatternWithSomeAttributes() {
         reset()
         prepareReadThen("jolokia.it:*/Bytes,State")
-                .validate("\$.value['jolokia.it:type=attribute'].Bytes", attributeMBean.getBytes())
-                .validate("\$.value['jolokia.it:type=attribute'].State", true)
-                .validate("\$.value['jolokia.it:type=attribute'].keySet()", hasSize(2))
-                .validate("\$.value.size()", 1)
+                .validate('$.value["jolokia.it:type=attribute"].Bytes', attributeMBean.getBytes())
+                .validate('$.value["jolokia.it:type=attribute"].State', true)
+                .validate('$.value["jolokia.it:type=attribute"].keySet()', hasSize(2))
+                .validate('$.value.size()', 1)
     }
 
     @Test
     @CitrusTest
     void wildcardPatternWithSingleAttribute() {
         prepareReadThen("jolokia.it:*/SmallDouble")
-                .validate("\$.value['jolokia.it:type=attribute'].SmallDouble", attributeMBean.getSmallDouble())
-                .validate("\$.value['jolokia.it:type=attribute'].keySet()", hasSize(1))
-                .validate("\$.value.size()", 1)
+                .validate('$.value["jolokia.it:type=attribute"].SmallDouble', attributeMBean.getSmallDouble())
+                .validate('$.value["jolokia.it:type=attribute"].keySet()', hasSize(1))
+                .validate('$.value.size()', 1)
     }
 
     @Test
     @CitrusTest
     void objectNameSerialization() {
         prepareReadThen("jolokia.it:type=attribute/ObjectName")
-                .validate("\$.value.objectName", attributeMBean.getObjectName().getCanonicalName())
-                .validate("\$.value.size()", 1)
+                .validate('$.value.objectName', attributeMBean.getObjectName().getCanonicalName())
+                .validate('$.value.size()', 1)
     }
 
     @Test
     @CitrusTest
     void setAsList() {
         prepareReadThen("jolokia.it:type=attribute/Set")
-                .validate("\$.value", contains("habanero", "jolokia"))
+                .validate('$.value', contains("habanero", "jolokia"))
     }
 
     @Test
     @CitrusTest
     void utf8() {
         prepareReadThen("jolokia.it:type=attribute/Utf8Content")
-                .validate("\$.value", "☯")
+                .validate('$.value', "☯")
     }
 
     @Test
     @CitrusTest
     void enumSerialization() {
         prepareReadThen("jolokia.it:type=attribute/Chili")
-                .validate("\$.value", Chili.AJI.name())
+                .validate('$.value', Chili.AJI.name())
     }
 
     @Test
     @CitrusTest
     void jsonMbeanAll() {
         prepareReadThen("jolokia.it.jsonmbean:type=plain")
-                .validate("\$.value.Data.set", contains(12L, 14L))
-                .validate("\$.value.keySet()", hasSize(1))
-                .validate("\$.value.Data.size()", greaterThan(1))
+                .validate('$.value.Data.set', contains(12L, 14L))
+                .validate('$.value.keySet()', hasSize(1))
+                .validate('$.value.Data.size()', greaterThan(1))
     }
 
     @Test
     @CitrusTest
     void tabularData() {
         prepareReadThen("jolokia.it:type=tabularData/Table2/Value0.0/Value0.1")
-                .validate("\$.value.Column1", "Value0.0")
-                .validate("\$.value.Column2", "Value0.1")
-                .validate("\$.value.Column3", "Value0.2")
-                .validate("\$.value.size()", 3)
+                .validate('$.value.Column1', "Value0.0")
+                .validate('$.value.Column2', "Value0.1")
+                .validate('$.value.Column3', "Value0.2")
+                .validate('$.value.size()', 3)
     }
 
     @Test
     @CitrusTest
     void mxBeanWithComplexKey() {
         prepareReadThen("jolokia.it:type=mxbean/MapWithComplexKey")
-                .validate("\$.value.size()", 2)
-                .validate("\$.value.indexNames[0]", "key")
-                .validate("\$.value.values.size()", 2)
-                .validate("\$.value.values[0].key.number", anyOf(equalTo(1L),equalTo(2L)));
+                .validate('$.value.size()', 2)
+                .validate('$.value.indexNames[0]', "key")
+                .validate('$.value.values.size()', 2)
+                .validate('$.value.values[0].key.number', anyOf(equalTo(1L),equalTo(2L)));
     }
 
     // =============================================================================

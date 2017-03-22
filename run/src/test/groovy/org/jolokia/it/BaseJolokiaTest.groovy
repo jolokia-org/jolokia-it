@@ -31,10 +31,10 @@ class BaseJolokiaTest extends JUnit4CitrusTestDesigner {
                  .response(HttpStatus.OK)
                  .contentType("@contains('text')@")
                  .messageType(MessageType.JSON)
-                 .validate("\$.request.type", type)
-                 .validate("\$.timestamp", lessThanOrEqualTo((Long) (System.currentTimeMillis() / 1000) + 1))
-                 .validate("\$.status", 200)
-                 .validate("\$.keySet()", hasItems("request","value","timestamp","status"));
+                 .validate('$.request.type', type)
+                 .validate('$.timestamp', lessThanOrEqualTo((Long) (System.currentTimeMillis() / 1000) + 1))
+                 .validate('$.status', 200)
+                 .validate('$.keySet()', hasItems("request","value","timestamp","status"));
     }
 
     protected HttpClientActionBuilder jolokiaClient() {

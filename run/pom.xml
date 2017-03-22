@@ -20,7 +20,8 @@
   </parent>
 
   <properties>
-    <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.20.0</docker.maven.plugin.version>
+    <citrus.version>2.7.1</citrus.version>
   </properties>
 
   <dependencies>
@@ -48,13 +49,13 @@
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
-      <version>2.6</version>
+      <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-java-dsl</artifactId>
-      <version>2.6</version>
+      <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
 
