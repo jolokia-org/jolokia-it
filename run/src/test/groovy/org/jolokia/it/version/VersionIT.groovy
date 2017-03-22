@@ -1,6 +1,6 @@
 package org.jolokia.it.version
 
-import com.jayway.restassured.response.Response
+import io.restassured.response.Response
 import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.AnsiConsole
 import org.jolokia.it.BaseJolokiaTest

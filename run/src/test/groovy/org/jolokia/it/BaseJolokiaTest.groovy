@@ -1,20 +1,12 @@
 package org.jolokia.it
 
-import com.jayway.restassured.RestAssured
-import com.jayway.restassured.builder.RequestSpecBuilder
-import com.jayway.restassured.builder.ResponseSpecBuilder
-import com.jayway.restassured.parsing.Parser
-import com.jayway.restassured.specification.RequestSpecification
-import com.jayway.restassured.specification.ResponseSpecification
-import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.AnsiConsole
-import org.junit.Before
+import io.restassured.builder.ResponseSpecBuilder
+import io.restassured.parsing.Parser
 import org.junit.BeforeClass
 
-import static com.jayway.restassured.RestAssured.*
-import static com.jayway.restassured.http.ContentType.JSON
-import static com.jayway.restassured.http.ContentType.TEXT
-import static com.jayway.restassured.matcher.RestAssuredMatchers.*
+import static io.restassured.RestAssured.*
+import io.restassured.specification.*;
+import static io.restassured.http.ContentType.*;
 import static org.hamcrest.Matchers.*
 
 /**

@@ -20,7 +20,7 @@
   </parent>
 
   <properties>
-    <docker.maven.plugin.version>0.13.8</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.20.0</docker.maven.plugin.version>
   </properties>
 
   <dependencies>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
 
@@ -46,9 +46,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.jayway.restassured</groupId>
+      <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>2.8.0</version>
+      <version>3.0.2</version>
       <scope>test</scope>
     </dependency>
 
@@ -108,7 +108,7 @@
       </plugin>
 
       <plugin>
-        <groupId>org.jolokia</groupId>
+        <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <executions>

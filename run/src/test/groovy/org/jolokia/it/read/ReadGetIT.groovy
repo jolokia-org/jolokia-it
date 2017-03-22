@@ -1,10 +1,10 @@
 package org.jolokia.it.read
 
-import com.jayway.restassured.response.ValidatableResponse
+import io.restassured.response.ValidatableResponse
 import org.jolokia.it.AttributeChecking
 
 /*
- * 
+ *
  * Copyright 2016 Roland Huss
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
