@@ -4,7 +4,7 @@ import com.consol.citrus.dsl.builder.HttpClientActionBuilder
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints
 import com.consol.citrus.dsl.junit.JUnit4CitrusTestDesigner
 import com.consol.citrus.http.client.HttpClient
-import com.consol.citrus.restdocs.RestDocClientInterceptor
+import com.consol.citrus.restdocs.http.RestDocClientInterceptor
 import org.junit.Before
 import org.junit.Rule
 import org.springframework.http.HttpHeaders
@@ -17,7 +17,7 @@ import org.springframework.restdocs.operation.preprocess.OperationPreprocessor
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.snippet.Snippet
 
-import static com.consol.citrus.restdocs.CitrusRestDocsSupport.*
+import static com.consol.citrus.restdocs.http.CitrusRestDocsSupport.*
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 /*

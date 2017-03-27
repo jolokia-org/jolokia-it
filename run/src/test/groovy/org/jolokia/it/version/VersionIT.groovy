@@ -33,9 +33,9 @@ public class VersionIT extends BaseJolokiaTest {
     @Test
     @CitrusTest
     void version() {
-        jolokiaClient().get("/version");
+        jolokiaClient().send().get("/version");
         jolokiaResponse("version")
-                .validate('$.value.agent', System.getProperty("jolokia.version"))
+                .validate('$.value.agent', startsWith("1.3"))
                 .validate('$.value.protocol', notNullValue())
                 .validate('$.value.info.keySet()', hasItems("product", "vendor", "version"))
                 .validate('$.value.config', notNullValue())
