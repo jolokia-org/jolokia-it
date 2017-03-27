@@ -5,7 +5,7 @@
     <!-- Default server version -->
     <server.version>8</server.version>
     <server.port>8080</server.port>
-    <server.image>fabric8/tomcat-${server.version}:1.0.0</server.image>
+    <server.image>fabric8/tomcat-${server.version}</server.image>
   </properties>
 
   <tiles>

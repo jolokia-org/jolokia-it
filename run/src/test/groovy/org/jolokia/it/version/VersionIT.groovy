@@ -35,16 +35,16 @@ public class VersionIT extends BaseJolokiaTest {
     void version() {
         jolokiaClient().get("/version");
         jolokiaResponse("version")
-                .validate("\$.value.agent", System.getProperty("jolokia.version").replaceAll("-SNAPSHOT", ""))
-                .validate("\$.value.protocol", notNullValue())
-                .validate("\$.value.info.keySet()", hasItems("product", "vendor", "version"))
-                .validate("\$.value.config", notNullValue())
-                .extractFromPayload("\$.value.agent", "agent")
-                .extractFromPayload("\$.value.protocol", "protocol")
-                .extractFromPayload("\$.value.info.product", "info.product")
-                .extractFromPayload("\$.value.info.version", "info.version")
-                .extractFromPayload("\$.value.info.vendor", "info.vendor")
-                .extractFromPayload("\$.value.config.agentType", "config.agentType");
+                .validate('$.value.agent', System.getProperty("jolokia.version"))
+                .validate('$.value.protocol', notNullValue())
+                .validate('$.value.info.keySet()', hasItems("product", "vendor", "version"))
+                .validate('$.value.config', notNullValue())
+                .extractFromPayload('$.value.agent', "agent")
+                .extractFromPayload('$.value.protocol', "protocol")
+                .extractFromPayload('$.value.info.product', "info.product")
+                .extractFromPayload('$.value.info.version', "info.version")
+                .extractFromPayload('$.value.info.vendor', "info.vendor")
+                .extractFromPayload('$.value.config.agentType', "config.agentType");
 
         printInfo()
     }

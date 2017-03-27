@@ -3,7 +3,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.jolokia</groupId>
+        <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
@@ -18,7 +18,7 @@
                   </from>
                 </volumes>
                 <env>
-                  <DEPLOY_DIR>/app</DEPLOY_DIR>
+                  <DEPLOY_DIR>/deployments</DEPLOY_DIR>
                 </env>
                 <ports>
                   <port>jolokia.port:${server.port}</port>
