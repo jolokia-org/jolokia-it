@@ -1,4 +1,4 @@
-package org.jolokia.it.version
+package org.jolokia.it
 
 import com.consol.citrus.actions.AbstractTestAction
 import com.consol.citrus.annotations.CitrusTest
@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.*
  * @author roland
  * @since 11.06.14
  */
-public class VersionIT extends BaseJolokiaTest {
+class VersionIT extends BaseJolokiaTest {
 
     private String SEP = c("====================================================",BLUE)
     private String P = c("===",BLUE)

@@ -6,7 +6,10 @@ import com.consol.citrus.dsl.endpoint.CitrusEndpoints
 import com.consol.citrus.dsl.junit.JUnit4CitrusTestDesigner
 import com.consol.citrus.http.client.HttpClient
 import com.consol.citrus.message.MessageType
+import groovy.json.JsonBuilder
 import org.junit.BeforeClass
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import org.springframework.http.HttpStatus
 
 import static org.hamcrest.Matchers.*
@@ -21,9 +24,9 @@ class BaseJolokiaTest extends JUnit4CitrusTestDesigner {
     @BeforeClass
     static void setup() {
         jolokiaClient = CitrusEndpoints.http()
-                                .client()
-                                .requestUrl(System.getProperty("jolokia.url"))
-                                .build();
+                .client()
+                .requestUrl(System.getProperty("jolokia.url"))
+                .build();
     }
 
     protected ReceiveMessageBuilder jolokiaResponse(String type) {
@@ -40,5 +43,9 @@ class BaseJolokiaTest extends JUnit4CitrusTestDesigner {
 
     protected HttpClientActionBuilder jolokiaClient() {
         return http().client(jolokiaClient);
+    }
+
+    public static enum JolokiaMethod {
+        GET, POST;
     }
 }

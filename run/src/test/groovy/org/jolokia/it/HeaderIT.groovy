@@ -1,4 +1,4 @@
-package org.jolokia.it.misc
+package org.jolokia.it
 
 import com.consol.citrus.dsl.builder.ReceiveMessageBuilder
 import com.consol.citrus.validation.DefaultMessageHeaderValidator
