@@ -153,13 +153,13 @@ public class ReadGetIT extends BaseJolokiaTest {
     // =============================================================================
 
     private ReceiveMessageBuilder prepareReadThen(String request) {
-        jolokiaClient().get("/read/" + request);
+        jolokiaClient().send().get("/read/" + request);
 
         return jolokiaResponse("read");
     }
 
     private void reset() {
         // needed for any test accessing 'State'
-        jolokiaClient().get("/exec/jolokia.it:type=attribute/reset")
+        jolokiaClient().send().get("/exec/jolokia.it:type=attribute/reset")
     }
 }

@@ -1,9 +1,12 @@
 package org.jolokia.it.misc
 
+import org.junit.Test
 import com.consol.citrus.annotations.CitrusTest
 import org.jolokia.it.BaseJolokiaTest
-import org.junit.Test
-import static org.hamcrest.Matchers.*
+
+import static org.hamcrest.Matchers.hasItems
+import static org.hamcrest.Matchers.notNullValue
+import static org.hamcrest.Matchers.startsWith
 
 /*
  *
@@ -28,12 +31,12 @@ import static org.hamcrest.Matchers.*
  */
 class HeaderIT extends BaseJolokiaTest {
 
-  //@Test
+  @Test
   @CitrusTest
   void version() {
-    jolokiaClient().get("/version");
+    jolokiaClient().send().get("/version");
     jolokiaResponse("version")
-            .validate("\$.value.agent", System.getProperty("jolokia.version"))
+            .validate("\$.value.agent", startsWith("1.3"))
             .validate("\$.value.protocol", notNullValue())
             .validate("\$.value.info.keySet()", hasItems("product", "vendor", "version"))
             .validate("\$.value.config", notNullValue())

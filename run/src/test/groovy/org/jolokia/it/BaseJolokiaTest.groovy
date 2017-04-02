@@ -28,6 +28,7 @@ class BaseJolokiaTest extends JUnit4CitrusTestDesigner {
 
     protected ReceiveMessageBuilder jolokiaResponse(String type) {
         return jolokiaClient()
+                 .receive()
                  .response(HttpStatus.OK)
                  .contentType("@contains('text')@")
                  .messageType(MessageType.JSON)

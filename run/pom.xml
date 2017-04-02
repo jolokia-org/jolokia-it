@@ -25,7 +25,6 @@
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.jolokia.it</groupId>
       <artifactId>jolokia-it-support-core</artifactId>
@@ -58,11 +57,26 @@
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- temp quickfix for Citrus dependency on selenium that should be optional, see https://github.com/jolokia-org/jolokia-it/issues/3 -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-selenium</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
       <version>1.11</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.9</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
