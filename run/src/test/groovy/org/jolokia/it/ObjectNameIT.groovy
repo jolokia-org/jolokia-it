@@ -26,7 +26,7 @@ class ObjectNameIT extends BaseJolokiaTest {
             "name with space",
             "n!a!m!e with !/!"
     ]
-    
+
     @Test
     @CitrusTest
     void namesGet() {

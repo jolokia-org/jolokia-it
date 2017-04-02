@@ -4,7 +4,7 @@
     <!-- Default server version -->
     <server.version>9</server.version>
     <server.port>8080</server.port>
-    <server.image>consol/jetty-${server.version}</server.image>
+    <server.image>fabric8/jetty-${server.version}</server.image>
   </properties>
 
   <tiles>
