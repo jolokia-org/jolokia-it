@@ -20,7 +20,7 @@
   </parent>
 
   <properties>
-    <docker.maven.plugin.version>0.20.0</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.20.1</docker.maven.plugin.version>
     <citrus.version>2.7.1</citrus.version>
   </properties>
 

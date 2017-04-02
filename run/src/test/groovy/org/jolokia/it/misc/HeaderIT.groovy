@@ -1,5 +1,7 @@
 package org.jolokia.it.misc
 
+import com.consol.citrus.dsl.builder.ReceiveMessageBuilder
+import com.consol.citrus.validation.DefaultMessageHeaderValidator
 import org.junit.Test
 import com.consol.citrus.annotations.CitrusTest
 import org.jolokia.it.BaseJolokiaTest
@@ -35,16 +37,14 @@ class HeaderIT extends BaseJolokiaTest {
   @CitrusTest
   void version() {
     jolokiaClient().send().get("/version");
-    jolokiaResponse("version")
-            .validate("\$.value.agent", startsWith("1.3"))
-            .validate("\$.value.protocol", notNullValue())
-            .validate("\$.value.info.keySet()", hasItems("product", "vendor", "version"))
-            .validate("\$.value.config", notNullValue())
-            .extractFromPayload("\$.value.agent", "agent")
-            .extractFromPayload("\$.value.protocol", "protocol")
-            .extractFromPayload("\$.value.info.product", "info.product")
-            .extractFromPayload("\$.value.info.version", "info.version")
-            .extractFromPayload("\$.value.info.vendor", "info.vendor")
-            .extractFromPayload("\$.value.config.agentType", "config.agentType");
+    ReceiveMessageBuilder builder = jolokiaResponse("version");
+    /*
+
+     TODO: Would like to validate on the headers:
+
+     - 'Expires' header is less than 'Date' Header
+     - 'Expires' header matches  RFC-1123 Format: /\w{3}, \d{1,2} \w{3} \d{4} \d{2}:\d{2}:\d{2} GMT/
+      */
+
   }
 }
