@@ -5,7 +5,7 @@ import com.jayway.restassured.specification.RequestSpecification
 import org.junit.Before
 import org.junit.Rule
 import org.springframework.http.HttpHeaders
-import org.springframework.restdocs.RestDocumentation
+import org.springframework.restdocs.JUnitRestDocumentation
 import org.springframework.restdocs.operation.OperationRequest
 import org.springframework.restdocs.operation.OperationRequestFactory
 import org.springframework.restdocs.operation.OperationResponse
@@ -24,7 +24,7 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration
 
 /*
- * 
+ *
  * Copyright 2015 Roland Huss
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 class BaseJolokiaDocumentation {
 
   @Rule
-  public RestDocumentation restDocumentation = new RestDocumentation("target/generated-snippets");
+  public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
   private RequestSpecification spec;
 
   RestDocumentationFilter doc;
@@ -63,13 +63,13 @@ class BaseJolokiaDocumentation {
   }
 
   // Can be overridden
-  OperationPreprocessor manageHeaders() {
+  static OperationPreprocessor manageHeaders() {
     return removeAllHeaders();
   }
 
   // ==========================================================================
 
-  private OperationPreprocessor removeAllHeaders() {
+  private static OperationPreprocessor removeAllHeaders() {
     return new OperationPreprocessor() {
 
       @Override
@@ -94,7 +94,7 @@ class BaseJolokiaDocumentation {
 
   static List<FieldDescriptor> commonResponseFields() {
     return [
-            f("timestamp","Timestamp when response was created servers side"),
+            f("timestamp","Timestamp when response was created on the server side"),
             f("status","Status code for JMX operation (200 : ok)"),
             f("request","Original request repeated")
     ];
