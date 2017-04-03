@@ -1,15 +1,8 @@
 package org.jolokia.it
 
-import com.consol.citrus.dsl.builder.ReceiveMessageBuilder
-import com.consol.citrus.validation.DefaultMessageHeaderValidator
-import org.junit.Test
 import com.consol.citrus.annotations.CitrusTest
 import org.jolokia.it.BaseJolokiaTest
-
-import static org.hamcrest.Matchers.hasItems
-import static org.hamcrest.Matchers.notNullValue
-import static org.hamcrest.Matchers.startsWith
-
+import org.junit.Test
 /*
  *
  * Copyright 2016 Roland Huss
@@ -37,14 +30,31 @@ class HeaderIT extends BaseJolokiaTest {
   @CitrusTest
   void version() {
     jolokiaClient().send().get("/version");
-    ReceiveMessageBuilder builder = jolokiaResponse("version");
-    /*
 
-     TODO: Would like to validate on the headers:
+    jolokiaResponse("version")
+      .extractFromHeader('Date', 'date')
+      .header('Expires', '@lowerThan(${date})@');
+  }
 
-     - 'Expires' header is less than 'Date' Header
-     - 'Expires' header matches  RFC-1123 Format: /\w{3}, \d{1,2} \w{3} \d{4} \d{2}:\d{2}:\d{2} GMT/
-      */
+  @Test
+  @CitrusTest
+  void versionWithScript() {
+    jolokiaClient().send().get("/version");
+    
+    jolokiaResponse("version")
+      .validator("defaultGroovyTextMessageValidator")
+      .validateScript('''
+        import org.junit.Assert
+        import java.time.*;
+        import java.time.format.DateTimeFormatter;
 
+        def date = headers.get('Date')
+        def expires = headers.get('Expires')
+        
+        Assert.assertTrue('<Expires> header value not less than <Date> header', expires < date)
+        Assert.assertTrue('<Expires> header does not match RFC-1123 format', OffsetDateTime.of(LocalDateTime.ofInstant(Instant.ofEpochMilli(1L), ZoneOffset.UTC), ZoneOffset.UTC)
+                                                                                            .format(DateTimeFormatter.RFC_1123_DATE_TIME).toString()
+                                                                                            .matches("\\\\w{3}, \\\\d{1,2} \\\\w{3} \\\\d{4} \\\\d{2}:\\\\d{2}:\\\\d{2} GMT"))
+      ''');
   }
 }
